@@ -1,0 +1,22 @@
+sudo: required
+
+services:
+  - docker
+
+script:
+  ## This runs the template with the default parameters, and runs test within the templated app.
+  - sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M test assembly
+  - docker build -t navicore/www.marymargaretsweeney.com .
+
+  # Tricks to avoid unnecessary cache updates
+  - find $HOME/.sbt -name "*.lock" | xargs rm
+  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker push navicore/www.marymargaretsweeney.com;
+    docker tag "navicore/www.marymargaretsweeney.com" "navicore/www.marymargaretsweeney.com:0.1.$TRAVIS_BUILD_NUMBER";
+    docker push "navicore/www.marymargaretsweeney.com:0.1.$TRAVIS_BUILD_NUMBER";
+    fi
+
