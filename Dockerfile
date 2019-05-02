@@ -1,2 +1,9 @@
-FROM nginx:alpine
-COPY . /usr/share/nginx/html
+FROM node:12
+
+COPY . /app
+
+WORKDIR /app
+
+RUN npm i -g serve
+
+CMD serve
