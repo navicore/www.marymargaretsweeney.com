@@ -5,3 +5,4 @@ Static Web Site for http://www.marymargaretsweeney.com
 ---
 
 * docker image built via travis ci is on [hub.docker.com](https://cloud.docker.com/u/navicore/repository/docker/navicore/www.marymargaretsweeney.com).
+
